@@ -1,0 +1,12 @@
+// Test of Calibration & range of HobbyKing RC unit.
+// declare R/C pins and variables
+#define RC1 4 // Use precompiler statements to define pins; they are constants
+#define RC2 8
+
+int ch1; // Right Joysteck, Left - Right reading
+int ch2; // Right Joysteck, Front - Back reading
+//int ch3; // Left Joysteck, Front - Back reading
+//int ch4; // Left Joystick, Left - Right reading
+//int ch5; // VR(A)
+//int ch6; // VR(B)
+

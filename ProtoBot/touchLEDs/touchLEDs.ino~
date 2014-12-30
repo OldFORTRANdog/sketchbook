@@ -1,0 +1,25 @@
+/*
+  touchLEDs:
+  Turns on an LED when button is pushed
+ */
+ 
+// Pin 13 has an LED connected on most Arduino boards.
+// give it a name:
+byte led = 12;
+byte touch1 = 11;
+byte touch2 = 10;
+
+// the setup routine runs once when you press reset:
+void setup() {                
+  // initialize the digital pin as an output.
+  pinMode(led, OUTPUT);   
+  pinMode(touch1, INPUT);
+  pinMode(touch2, INPUT);
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  if(digitalRead(touch1) == HIGH) {
+    digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
+  }
+}
