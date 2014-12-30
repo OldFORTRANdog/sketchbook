@@ -18,7 +18,7 @@
 //#define FBUMPPIN 5
 #define RBUMPPIN 4
 
-//#define ANYFOBPIN 2
+#define ANYFOBPIN 2
 #define AFOBPIN 5
 #define BFOBPIN 6
 #define CFOBPIN 7
@@ -85,9 +85,9 @@ void loop(void){
   /* Serial.print(", rBump = "); */
   /* Serial.print(rBump); */
  
-  duration = 50; // check for key fob press every 50 ms
-  magnitude = 100;
-  // Serial.print(digitalRead(ANYFOBPIN));
+  duration = 3; // check for key fob press every 50 ms
+ 
+  Serial.print(digitalRead(ANYFOBPIN));
   Serial.print(digitalRead(AFOBPIN));
   Serial.print(digitalRead(BFOBPIN));
   Serial.print(digitalRead(CFOBPIN));
@@ -95,20 +95,24 @@ void loop(void){
 
   if ( digitalRead(AFOBPIN) ) {
     direction = 0;
-  }
+    magnitude = 100;
+ }
   else  if ( digitalRead(BFOBPIN) ) {
     direction = 90;
+    magnitude = 100;
   }
   else if ( digitalRead(CFOBPIN) ) {
     direction = 270;
+    magnitude = 100;
   }
   else if ( digitalRead(DFOBPIN) ) {
     direction = 180;
+    magnitude = 100;
   }
-  else {
-    direction = 0;
-    duration = 0;
-  }
+  /* else { */
+  /*   direction = 0; */
+  /*   duration = 0; */
+  /* } */
   
   /* panServo.write(pan); */
   /* tiltServo.write(tilt); */
@@ -177,7 +181,7 @@ void loop(void){
     /* Serial.println(copysign(wR,wR_speed)); */
 
     // Run motors for the duration requested
-    delay(duration);
+        delay(duration);
 
   }
   else{ // no duration entered, so stop all motors
