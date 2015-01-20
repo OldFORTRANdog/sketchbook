@@ -70,9 +70,9 @@ void setup(void){
   // Keyfob Remote pins
   //  pinMode(ANYFOBPIN, INPUT); // DOES NOT HAVE 330 ohm pulldown resistor on it
   pinMode(AFOBPIN, INPUT); // Has 330 ohm pulldown resistor on it
-  pinMode(AFOBPIN, INPUT); // Has 330 ohm pulldown resistor on it
-  pinMode(AFOBPIN, INPUT); // Has 330 ohm pulldown resistor on it
-  pinMode(AFOBPIN, INPUT); // Has 330 ohm pulldown resistor on it
+  pinMode(BFOBPIN, INPUT); // Has 330 ohm pulldown resistor on it
+  pinMode(CFOBPIN, INPUT); // Has 330 ohm pulldown resistor on it
+  pinMode(DFOBPIN, INPUT); // Has 330 ohm pulldown resistor on it
 
   /* // Servo pins */
   /* panServo.attach(PANSERVOPIN); */

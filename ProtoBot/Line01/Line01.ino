@@ -4,7 +4,7 @@
    http://www.foxytronics.com/learn/robots/kit-guides/line-follower-kit-guide/assembling-the-kit
   
    Initially Adapted by Dave Eslinger, 1/5/2015
-   -------------------------------------------------------------------- */
+   -----------------------------------------------------------*/
 
 
 const int serialPeriod = 250;       // only print to the serial console every 1/4 second
