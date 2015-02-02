@@ -28,6 +28,7 @@
 #endif
 
 #define FIREPIN 12
+#define MOTORPIN 11
 
 /* unsigned long timeCheck; */
 // unsigned long myTimer; 
@@ -38,7 +39,7 @@ byte magnitude;
 boolean armed = false;
 boolean fired = true;
 
-String armCode = String("AADDC");
+String armCode = String("AABBC");
 String fireCode = String("ABC");
 
 // Create the motor shield object with the default I2C address
@@ -65,7 +66,8 @@ void setup(void){
      digitalWrite(DFOBPIN,LOW);
      digitalWrite(ANYFOBPIN,LOW);
        
-     // set up Firing pin for testing
+     // set up Firing pin for testing with 12V motor
+     pinMode(MOTORPIN, OUTPUT);
      pinMode(FIREPIN, OUTPUT);
      digitalWrite(FIREPIN, HIGH);
 }
@@ -101,14 +103,21 @@ void loop(void) {
  /*  mTrigger->run(direction); */
  /*  delay(duration); */
 
+  /* for(byte val = 0; val<256; val++) { */
+  /*   Serial.println(val); */
+  /*   analogWrite(MOTORPIN, val); */
+  /*   delay(1000); */
+  /* } */
+
+
   if(codeEntered(armCode)) {
-    digitalWrite(FIREPIN,LOW);
-    delay(1000);
-    digitalWrite(FIREPIN,HIGH);
-    delay(1000);
+    armTreb();  // Do whatever is needed for arming
+    // Armed, now check for the fire code
+    if(codeEntered(fireCode)) {
+      fireTreb();
+    }
   }
 }
-
 boolean codeEntered(String secretCode) {
   unsigned long timeOut = 5000; // Millsec between button pushes before code resets
   unsigned long pressTime = millis();
@@ -118,14 +127,11 @@ boolean codeEntered(String secretCode) {
   byte oldFob = 0;
   
   while (millis() - pressTime < timeOut) { // Not timed out
-    // Read FOB buttons using a binary incoding
-    /* byte fobValue = digitalRead(AFOBPIN) + // the 1's */
-    /*   2 * digitalRead(BFOBPIN) +           // the 2's */
-    /*   4 * digitalRead(CFOBPIN) +           // the 4's */
-    /*   8 * digitalRead(DFOBPIN);            // the 8's */
-    byte fobValue = readFob();
+ 
+    byte fobValue = readFob(); // Read the fob code
     if (fobValue > 0 &&  millis()-pressTime >=debounce)  { 
       // there was a button pushed after the debounce period
+      // and before the timeout period
       pressTime = millis();
       switch (fobValue) {
       case(1):  // Button A was pressed
@@ -147,6 +153,8 @@ boolean codeEntered(String secretCode) {
       Serial.print(entry);
       Serial.print(", secretCode = ");
       Serial.print(secretCode);
+      Serial.print(", secretCode.length= ");
+      Serial.print(secretCode.length());
       Serial.print(", fobValue = ");
       Serial.print(fobValue);
       Serial.print(", oldFob = ");
@@ -160,7 +168,7 @@ boolean codeEntered(String secretCode) {
       }
       else { // incorrect code
 	codePosition = 0;
-	Serial.println("ERROR! Entered code incorrect. Code reset \7");
+	Serial.println("ERROR! Entered code incorrect. Entered code cleared.");
 	return false;
       }
       pressTime = millis();
@@ -169,29 +177,51 @@ boolean codeEntered(String secretCode) {
     } // End of fobValue if block
   }
   codePosition = 0;  // Took too long
-  Serial.println("Timeout: Entered code reset \7");
+  Serial.println("Timeout: Please start again.");
+  digitalWrite(FIREPIN,HIGH);
   return false;
 }
 
 
 byte readFob() {
-  /*  Reads fob button pushes, waits until nothing 
-      pushed to return a value  */
-  byte checkFob = 0;
-  byte buttonsUp = 15;
-  //  while (checkFob = 0) {
-    checkFob = digitalRead(AFOBPIN) + // the 1's
-      2 * digitalRead(BFOBPIN) + // the 2's
-      4 * digitalRead(CFOBPIN) + // the 4's
-      8 * digitalRead(DFOBPIN);  // the 8's
-    //  }
-  // Serial.println(checkFob);
-  /* while (buttonsUp > 0 ) { */
-  /*   buttonsUp = digitalRead(AFOBPIN) + // the 1's */
-  /*     2 * digitalRead(BFOBPIN) + // the 2's */
-  /*     4 * digitalRead(CFOBPIN) + // the 4's */
-  /*     8 * digitalRead(DFOBPIN);  // the 8's */
-  /*   Serial.println(buttonsUp); */
-  /* } */
-  return checkFob;
+  /*  Reads one fob button push, then waits until all buttons are
+      released to return the initial button value  */
+byte checkFob = 0;
+byte buttonsUp = 15;
+do {
+  checkFob = digitalRead(AFOBPIN) + // the 1's
+    2 * digitalRead(BFOBPIN) + // the 2's
+    4 * digitalRead(CFOBPIN) + // the 4's
+    8 * digitalRead(DFOBPIN);  // the 8's
+  //  Serial.print(checkFob);
+}  while (checkFob == 0);  
+do {
+  buttonsUp = digitalRead(AFOBPIN) + // the 1's
+    2 * digitalRead(BFOBPIN) + // the 2's
+    4 * digitalRead(CFOBPIN) + // the 4's
+    8 * digitalRead(DFOBPIN);  // the 8's
+  Serial.print(", buttonsUp = ");
+  Serial.println(buttonsUp);
+} while (buttonsUp > 0);
+Serial.println();
+Serial.print("Out of checkFob do/while loop, checkFob = ");
+Serial.println(checkFob);
+return checkFob;
+}
+
+void armTreb(void) {
+  digitalWrite(FIREPIN,LOW);
+}
+
+void fireTreb(void) {
+ // Set the speedRun the motor
+  digitalWrite(FIREPIN,HIGH);
+  Serial.println("BOOM, Trebuchet launched!");
+  magnitude = 250;
+  direction = FORWARD;
+  duration = 400;
+  mTrigger->setSpeed(magnitude);
+  mTrigger->run(direction);
+  delay(duration);
+  mTrigger->run(RELEASE);
 }
