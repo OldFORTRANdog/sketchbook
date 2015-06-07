@@ -27,8 +27,11 @@
 #define ANYFOBPIN 7 
 #endif
 
-#define FIREPIN 12
+#define ARMPIN 12
 #define MOTORPIN 11
+#define MOTPWMPIN 1
+
+#define MPORT 4
 
 /* unsigned long timeCheck; */
 // unsigned long myTimer; 
@@ -39,14 +42,14 @@ byte magnitude;
 boolean armed = false;
 boolean fired = true;
 
-String armCode = String("AABBC");
-String fireCode = String("ABC");
+String armCode = String("ABC");
+String fireCode = String("DC");
 
 // Create the motor shield object with the default I2C address
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
 
 // Define motor port for motors.
-Adafruit_DCMotor *mTrigger = AFMS.getMotor(4);
+Adafruit_DCMotor *mTrigger = AFMS.getMotor(MPORT);
 
 void setup(void){
   Serial.begin(9600);
@@ -68,8 +71,9 @@ void setup(void){
        
      // set up Firing pin for testing with 12V motor
      pinMode(MOTORPIN, OUTPUT);
-     pinMode(FIREPIN, OUTPUT);
-     digitalWrite(FIREPIN, HIGH);
+     pinMode(ARMPIN, OUTPUT);
+     digitalWrite(ARMPIN, HIGH);
+     digitalWrite(MOTORPIN, LOW);
 }
 
 void loop(void) {
@@ -115,6 +119,9 @@ void loop(void) {
     // Armed, now check for the fire code
     if(codeEntered(fireCode)) {
       fireTreb();
+    }
+    else {
+      digitalWrite(ARMPIN,HIGH); // ARMPIN off if correct code not entered
     }
   }
 }
@@ -178,7 +185,7 @@ boolean codeEntered(String secretCode) {
   }
   codePosition = 0;  // Took too long
   Serial.println("Timeout: Please start again.");
-  digitalWrite(FIREPIN,HIGH);
+  //digitalWrite(ARMPIN,HIGH);
   return false;
 }
 
@@ -203,25 +210,27 @@ do {
   Serial.print(", buttonsUp = ");
   Serial.println(buttonsUp);
 } while (buttonsUp > 0);
-Serial.println();
-Serial.print("Out of checkFob do/while loop, checkFob = ");
-Serial.println(checkFob);
+/* Serial.println(); */
+/* Serial.print("Out of checkFob do/while loop, checkFob = "); */
+/* Serial.println(checkFob); */
 return checkFob;
 }
 
 void armTreb(void) {
-  digitalWrite(FIREPIN,LOW);
+  digitalWrite(ARMPIN,LOW);
 }
 
 void fireTreb(void) {
  // Set the speedRun the motor
-  digitalWrite(FIREPIN,HIGH);
+  digitalWrite(ARMPIN,HIGH);
   Serial.println("BOOM, Trebuchet launched!");
-  magnitude = 250;
-  direction = FORWARD;
-  duration = 400;
-  mTrigger->setSpeed(magnitude);
-  mTrigger->run(direction);
+  /* magnitude = 250; */
+  /* direction = FORWARD; */
+  duration = 5000; 
+  /* mTrigger->setSpeed(magnitude); */
+  /* mTrigger->run(direction); */
+  /* mTrigger->run(RELEASE); */
+  digitalWrite(MOTORPIN, HIGH);
   delay(duration);
-  mTrigger->run(RELEASE);
+  digitalWrite(MOTORPIN, LOW);
 }
