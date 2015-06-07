@@ -1,35 +1,44 @@
-/* 
-   This versionof TmT2 is a test sketch for autonomous driving mode of
+/* HoloSquare.ino
+   This is a test sketch for autonomous driving mode of
    the three-wheeled drive Bread Board Bot (BBbot, B^3) 
 
+   Arduino: Arduino Mega 256 v3 Clone
    Motor Shield: Adafruit assembled Motor Shield for Arduino v2
    ---->  http://www.adafruit.com/products/1438
 
    Programmer: Dave Eslinger; December 2, 2014
+   Revisions: May 25, 2015
 */
+#include <Wire.h>
 #include <Adafruit_MotorShield.h> 
+//#include <"utility/Adafruit_PWMServoDriver.h"
 #include <math.h>
 
-String inputString = "";         // a string to hold incoming data
-boolean stringComplete = false;  // whether the string is complete
 float theta;
 int direction;
 float magnitude;
 float duration;
 byte brake;
+byte mLdir;
+byte mBdir;
+byte mRdir;
 
-//void printCurrentSensing(void);
+// Create the motor shield object with the default I2C address
+Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
 
-//int num_motors = 3;
-Wicked_DCMotor mL(M1);
-Wicked_DCMotor mF(M2);
-Wicked_DCMotor mR(M3);
-
-//Wicked_DCMotor *m[] = {&mL, &mF, &mR};
+// Define 'ports' M1, M2, M3 or M4 for motors.
+Adafruit_DCMotor *mL = AFMS.getMotor(3);
+Adafruit_DCMotor *mB = AFMS.getMotor(2);
+Adafruit_DCMotor *mR = AFMS.getMotor(1);
 
 
 void setup(void){
   Serial.begin(9600);
+  AFMS.begin();  // create with the default frequency 1.6KHz
+  // Turn off all motors
+  mL->run(RELEASE);
+  mB->run(RELEASE);
+  mR->run(RELEASE);
 }
 
 void loop(void){
@@ -45,9 +54,12 @@ void loop(void){
   // Autonomous loop for driving in a square
   for ( byte leg = 1; leg < 6; leg++ ) {
     duration = 2;
-    magnitude = 75;
-    brake = 0; // No braking
+    magnitude = 50;
+    //    brake = 0; // No braking
     switch (leg) {
+    case 1: // Move forward
+      direction = 0.;
+      break;
     case 2: // Move right
       direction = 90.;
       break;
@@ -57,14 +69,11 @@ void loop(void){
     case 4: // Move left
       direction = -90.;
       break;
-    case 1: // Move forward
-      direction = 0.;
-      break;
     default: // Stop and pause at starting point
       magnitude = 0;
       duration = 4;
       direction = 0;
-      brake = 1; // hard stop
+      //      brake = 1; // hard stop
     }
     theta = ( M_PI * direction ) / 180. ; 
 
@@ -87,35 +96,37 @@ void loop(void){
       
     const float sqrt3o2 = 1.0*sqrt(3)/2;
     //STEP 3. Find wheel vectors
-    float wF = -vx * .95 ;  // Multiply by fudge factor to prevent rotation if needed
+    float wB = -vx * .95 ;  // Multiply by fudge factor to prevent rotation if needed
     float wL = 0.5*vx - sqrt3o2 * vy; 
     float wR = 0.5*vx + sqrt3o2 * vy; 
    
-    byte wF_speed = (byte) map(abs(wF), 0, 100, 0, 255);
+    byte wB_speed = (byte) map(abs(wB), 0, 100, 0, 255);
     byte wL_speed = (byte) map(abs(wL), 0, 100, 0, 255);
     byte wR_speed = (byte) map(abs(wR), 0, 100, 0, 255);
-    /* Set Motor directions: 
+    /* Set Motor directions.  For Adafruit V2 Motorshield: 
          1 is Clockwise (Positive motor direction)
-         0 is Counterclockwise (Negative vector direction)
+         2 is Counterclockwise (Negative vector direction)
+	 3 is Brake (May not work)
+	 4 is Release = stop power, not driving, but not brake
 	 so we can use a logic test since TRUE = 1 and FALSE = 0
     */
-    mF.setDirection(wF > 0) ;
-    mL.setDirection(wL > 0);
-    mR.setDirection(wR > 0);
+    mB->run((wB > 0) ? 1: 2 );
+    mL->run((wL > 0) ? 1: 2 );
+    mR->run((wR > 0) ? 1: 2 );
 
-    // Set the brakes
-    mF.setBrake(brake);
-    mL.setBrake(brake);
-    mR.setBrake(brake);
+    /* // Set the brakes */
+    /* mB->setBrake(brake); */
+    /* mL->setBrake(brake); */
+    /* mR->setBrake(brake); */
 
     // Set the speeds
-    mF.setSpeed(wF_speed);
-    mL.setSpeed(wL_speed);
-    mR.setSpeed(wR_speed);
+    mB->setSpeed(wB_speed);
+    mL->setSpeed(wL_speed);
+    mR->setSpeed(wR_speed);
     
     //Print out motor control details
     Serial.print("Speeds F,L,R = ");
-    Serial.print(copysign(wF_speed,wF));
+    Serial.print(copysign(wB_speed,wB));
     Serial.print(", ");
     Serial.print(copysign(wL,wL_speed));
     Serial.print(", ");
@@ -126,9 +137,9 @@ void loop(void){
     
   }
   else{ // no duration entered, so stop all motors
-    mF.setSpeed(0);
-    mL.setSpeed(0);
-    mR.setSpeed(0);
+    mB->setSpeed(0);
+    mL->setSpeed(0);
+    mR->setSpeed(0);
   }
   }  
 

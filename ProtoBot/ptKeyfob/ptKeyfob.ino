@@ -43,6 +43,8 @@ byte mRdir;
 byte pan;
 byte tilt;
 
+unsigned long timer;
+
 // Create the motor shield object with the default I2C address
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
 
@@ -68,9 +70,9 @@ void setup(void){
   // Keyfob Remote pins
   //  pinMode(ANYFOBPIN, INPUT); // DOES NOT HAVE 330 ohm pulldown resistor on it
   pinMode(AFOBPIN, INPUT); // Has 330 ohm pulldown resistor on it
-  pinMode(AFOBPIN, INPUT); // Has 330 ohm pulldown resistor on it
-  pinMode(AFOBPIN, INPUT); // Has 330 ohm pulldown resistor on it
-  pinMode(AFOBPIN, INPUT); // Has 330 ohm pulldown resistor on it
+  pinMode(BFOBPIN, INPUT); // Has 330 ohm pulldown resistor on it
+  pinMode(CFOBPIN, INPUT); // Has 330 ohm pulldown resistor on it
+  pinMode(DFOBPIN, INPUT); // Has 330 ohm pulldown resistor on it
 
   /* // Servo pins */
   /* panServo.attach(PANSERVOPIN); */
@@ -85,7 +87,9 @@ void loop(void){
   /* Serial.print(", rBump = "); */
   /* Serial.print(rBump); */
  
-  duration = 3; // check for key fob press every 50 ms
+  //duration = 3; // check for key fob press every 3 ms
+  duration = 50; // check for key fob press every 50 ms
+  timer = millis();
  
   Serial.print(digitalRead(ANYFOBPIN));
   Serial.print(digitalRead(AFOBPIN));
@@ -113,6 +117,8 @@ void loop(void){
   /*   direction = 0; */
   /*   duration = 0; */
   /* } */
+
+  //magnitude = 0;
   
   /* panServo.write(pan); */
   /* tiltServo.write(tilt); */
@@ -181,14 +187,16 @@ void loop(void){
     /* Serial.println(copysign(wR,wR_speed)); */
 
     // Run motors for the duration requested
-        delay(duration);
+    //        delay(duration); 
+    // replace with timer & millis test in duration if statment
+    
 
   }
-  else{ // no duration entered, so stop all motors
-    mF->setSpeed(0);
-    mL->setSpeed(0);
-    mR->setSpeed(0);
-  }  
+  /* else{ // no duration entered, so stop all motors */
+  /*   mF->setSpeed(0); */
+  /*   mL->setSpeed(0); */
+  /*   mR->setSpeed(0); */
+  /* }   */
 
 }
 
