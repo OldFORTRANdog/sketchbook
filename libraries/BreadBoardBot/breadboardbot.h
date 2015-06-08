@@ -33,8 +33,9 @@ void allStop(int direction, Adafruit_DCMotor motorLeft, Adafruit_DCMotor motorRi
 float duration_per_distance( float distance, byte speed) {
   /* Find drive time in milliseconds from relationship developed from
      observations of distance/time for a speed.  */
-  float duration = abs(distance) * 50.;  // 500 ms/distnace unit for testing
-  return duration;
+  float dist_per_sec = (0.117 * float(speed)) - 1.5;// in inches, from data
+  float duration = abs(distance) / dist_per_sec;    // needed time in sec
+  return duration * 1000.0 ;                        // Return in milliseconds
 }
 
 
@@ -69,7 +70,7 @@ void spin(float degrees, byte speed,
     The actual distance will be the Circumference * the fraction of the
     circle needed, given by the ratio degrees/360. */
   // float distance = PI * trackWidth * degrees / 360.;
-  float distance = PI * trackWidth* degrees / 360.;
+  float distance = PI * trackWidth * degrees / 360.;
   float duration = duration_per_distance(distance, speed);
   if (degrees > 0) {
     /* Positive angle is spin turn to the right; therefore right motor goes
@@ -80,6 +81,31 @@ void spin(float degrees, byte speed,
   else { // Negative or 0 angle, turn to the left
     mRight.run(FORWARD);
     mLeft.run(BACKWARD);
+  }
+  delay(duration);
+  return;
+}
+
+void pivot(float degrees, byte speed,
+	   Adafruit_DCMotor mLeft, Adafruit_DCMotor mRight) {
+  /* A pivot turns moves only one wheel, the one opposite the turn 
+     directions.  The needed distance is determined by the
+     degrees parameter, around a circle with a RADIUS of the
+     robot track width.
+     
+     The actual distance will be the Circumference * the fraction of the
+     circle needed, given by the ratio degrees/360. */
+  float distance = PI * trackWidth * degrees / 360.;
+  float duration = duration_per_distance(distance, speed);
+  if (degrees > 0) {
+    /* Positive angle is spin turn to the right; therefore right motor 
+       does nothing and left side goes forward */
+    mRight.run(RELEASE);
+    mLeft.run(FORWARD);
+  }
+  else { // Negative or 0 angle, turn to the left
+    mRight.run(FORWARD);
+    mLeft.run(RELEASE);
   }
   delay(duration);
   return;
