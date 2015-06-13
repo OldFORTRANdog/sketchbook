@@ -31,18 +31,17 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 
 // Define Constants
 
+const byte LEFT_PR_PIN = A15;    // Define light sensor pins for left 
+const byte RIGHT_PR_PIN = A14;   // and right sides
 
-const byte PR_PIN_LEFT = 15;    // Define light sensor pins for left 
-const byte PR_PIN_RIGHT = 14;   // and right sides
-
-const bool PHOTOTAXIS = true;
+//const bool PHOTOTAXIS = true;
 
 // Define 'ports' for motors.
-const byte LEFTMOTORPORT = 3;
-const byte RIGHTMOTORPORT = 1;
+const byte LEFT_MOTOR_PORT = 3;
+const byte RIGHT_MOTOR_PORT = 1;
 // Create pointers to motor control objects
-Adafruit_DCMotor *motorLeft = AFMS.getMotor(LEFTMOTORPORT);
-Adafruit_DCMotor *motorRight = AFMS.getMotor(RIGHTMOTORPORT);
+Adafruit_DCMotor *motorLeft = AFMS.getMotor(LEFT_MOTOR_PORT);
+Adafruit_DCMotor *motorRight = AFMS.getMotor(RIGHT_MOTOR_PORT);
 
 
 void setup(void){
@@ -56,8 +55,8 @@ void setup(void){
 void loop(){
   /*  First determine the relative light levels and print the 
       results out to the serial monitor */
-  int leftLight = analogRead(PR_PIN_LEFT);
-  int rightLight = analogRead(PR_PIN_RIGHT);
+  int leftLight = analogRead(LEFT_PR_PIN);
+  int rightLight = analogRead(RIGHT_PR_PIN);
   Serial.print(leftLight);           // We can only write ONE thing
   Serial.print(" = left, right = "); // at a time, therefore it takes
   Serial.println(rightLight);        // three statemens to get our output.
@@ -66,8 +65,8 @@ void loop(){
      a function of light level and drive either towards or
      away from the light depending on the value of PHOTOAXIS  */
 
-  motorLeft->setSpeed(map(rightLight,0,1023,50,255));
-  motorRight->setSpeed(map(leftLight,0,1023,50,255));
+  motorLeft->setSpeed(map(rightLight,0,500,50,255));
+  motorRight->setSpeed(map(leftLight,0,500,50,255));
   byte direction;
   if (PHOTOTAXIS) {
     direction = FORWARD;

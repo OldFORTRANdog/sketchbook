@@ -21,11 +21,11 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 const byte TESTSPEED = 155;
 
 // Define 'ports' for motors.
-const byte LEFTMOTORPORT = 3;
-const byte RIGHTMOTORPORT = 1;
+const byte LEFT_MOTOR_PORT = 3;
+const byte RIGHT_MOTOR_PORT = 1;
 // Create pointers to motor control objects
-Adafruit_DCMotor *motorLeft = AFMS.getMotor(LEFTMOTORPORT);
-Adafruit_DCMotor *motorRight = AFMS.getMotor(RIGHTMOTORPORT);
+Adafruit_DCMotor *motorLeft = AFMS.getMotor(LEFT_MOTOR_PORT);
+Adafruit_DCMotor *motorRight = AFMS.getMotor(RIGHT_MOTOR_PORT);
 
 
 void setup(void){
