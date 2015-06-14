@@ -25,9 +25,9 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 const byte LEFT_BUMP_PIN = 47;    // Define DIGITAL Pins for left
 const byte RIGHT_BUMP_PIN = 46;   // and right bump sensors
 
-const byte FORWARD_SPEED = 100;   // Define normal speeds
+const byte FORWARD_SPEED = 150;   // Define normal speeds
 const byte BACKWARD_SPEED = 100;  // and backup/turn speed
-const int  TURN_DURATION = 500;   // Turn length in milliseconds
+const int  TURN_DURATION = 600;   // Turn length in milliseconds
 
 // Define 'ports' for motors.
 const byte LEFT_MOTOR_PORT = 3;
@@ -71,6 +71,8 @@ void loop(){
     motorLeft->run(BACKWARD);
     motorRight->run(BACKWARD);
     delay(TURN_DURATION);                  // for specified duration
+    motorLeft->run(RELEASE);               // Then stop power to the motors
+    motorRight->run(RELEASE);              // and move to next section of code
   }
 
   /* Then check the right sensor: */
@@ -80,6 +82,8 @@ void loop(){
     motorLeft->run(BACKWARD);
     motorRight->run(BACKWARD);
     delay(TURN_DURATION);                 // for specified duration
+    motorLeft->run(RELEASE);               // Then stop power to the motors
+    motorRight->run(RELEASE);              // and move to next section of code
   }
 
    /*That is all!  Now go back to the beginning of the loop and 

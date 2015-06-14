@@ -1,7 +1,8 @@
-/* B3_Sonic.ino
+/* B3_LineFollow.ino
 
    Drive the TWO-WHEELED Bread Board Bot (BBbot, B^3)
-   forward.   When a whisker bump sensor on either side hits something,
+   forward, following a black line, but pretty inefficiently.
+   When a whisker bump sensor on either side hits something,
    back up and turn slightly away from that direction and resume 
    forward path.  
 
@@ -30,6 +31,11 @@ const byte LEFT_BUMP_PIN = 47;    // Define DIGITAL Pins for left
 const byte RIGHT_BUMP_PIN = 46;   // and right bump sensors
 const byte SONIC_TRIGGER_PIN = 50;
 const byte SONIC_ECHO_PIN = 51;
+const byte LEFT_IR_LED_PIN = 43;
+const byte LEFT_IR_PIN = A11;
+const byte RIGHT_IR_LED_PIN = 42;
+const byte RIGHT_IR_PIN = A10;
+const byte CALIBRATE_PIN = 31;
 
 // Parameters controlling program behavior
 // Bump behavior
@@ -41,6 +47,9 @@ const int  TURN_DURATION = 600;   // Turn length in milliseconds
 const float TARGET_DISTANCE_INCHES = 10; 
 const int MAX_SONIC_DISTANCE = 500;      // cm, optional, 500 cm is default
 
+// Line Following
+const int LINE_TURN_TIME = 600;
+
 // Define 'ports' for motors.
 const byte LEFT_MOTOR_PORT = 3;
 const byte RIGHT_MOTOR_PORT = 1;
@@ -51,6 +60,15 @@ Adafruit_DCMotor *motorRight = AFMS.getMotor(RIGHT_MOTOR_PORT);
 /* Define new untrasonic sensor with trigger & echo pins and 
    the maximum distance to be sensed. */
 NewPing sonic(SONIC_TRIGGER_PIN, SONIC_ECHO_PIN, MAX_SONIC_DISTANCE); 
+
+/* Global Variables */
+int leftIR;
+int minLeftIR = 1026;
+int maxLeftIR = -1024;
+int rightIR;
+int minRightIR = 1026;
+int maxRightIR = -1024;
+
 
 void setup(void){
   AFMS.begin();  // create with the default frequency 1.6KHz
@@ -64,35 +82,72 @@ void setup(void){
     which will make a connection to ground and they will read low. */
   pinMode(LEFT_BUMP_PIN,INPUT_PULLUP);
   pinMode(RIGHT_BUMP_PIN,INPUT_PULLUP);
+  
+  /* Define IR LED source pins as OUTPUTs and turn on the IR LEDs */
+  pinMode(LEFT_IR_LED_PIN, OUTPUT);
+  pinMode(RIGHT_IR_LED_PIN,OUTPUT);
+  digitalWrite(LEFT_IR_LED_PIN,HIGH);
+  digitalWrite(RIGHT_IR_LED_PIN,HIGH);
 
-  //  pinMode(SONIC_TRIGGER_PIN,OUTPUT);
-  //  pinMode(SONIC_ECHO_PIN,INPUT);
-  delay(2000);  // Two second delay to get the robot placed
+  /* Calibrate the IR sensors
+     1) Place over the brightest target and ground pin CALIBRATE_PIN with 
+     jumper (this is a snaeky way to make a switch!)
+     2) Remove the grounding jumper wire,
+     3) Place over the darkest target and ground the pin again.
+     4) All done!  Remove the grounding jumper wire and the program proceeds.
+  */
+  pinMode(CALIBRATE_PIN, INPUT_PULLUP);  // Set pin high = logical true
+  while(CALIBRATE_PIN) {}  // Pause until the pin is grounded (our switch)
+  while(!CALIBRATE_PIN) {  // Get high light values until the pin 
+                           // is no longer grounded 
+    leftIR = analogRead(LEFT_IR_PIN);
+    rightIR = analogRead(RIGHT_IR_PIN);
+    if ( leftIR > maxLeftIR ) {
+      maxLeftIR = leftIR;}
+    if ( rightIR > maxRightIR ) {
+      maxRightIR = rightIR;}
+  }
+  /*Do the same, but over a dark target */
+  while(CALIBRATE_PIN) {}  // Pause until the pin is grounded (our switch)
+  while(!CALIBRATE_PIN) {  // Get dark light values until the pin 
+                           // is no longer grounded 
+    leftIR = analogRead(LEFT_IR_PIN);
+    rightIR = analogRead(RIGHT_IR_PIN);
+    if ( leftIR < minLeftIR ) {
+      minLeftIR = leftIR;}
+    if ( rightIR > minRightIR ) {
+      minRightIR = rightIR;}
+  }
+  //delay(2000);  // Two second delay to get the robot placed
 }
 
 void loop(){
   // Test some of the sonic library functions:
-  int inches = sonic.ping_in();
-  Serial.print(inches);
-  Serial.print(" inches, cm = ");
-  Serial.print(sonic.ping_cm());
-  Serial.print(", actual ping time (ms) = ");
-  int ping_milli = sonic.ping();
-  Serial.print(ping_milli);
-  Serial.print(", real inches = ");
-  Serial.print(Distance_inches(ping_milli));
-  Serial.print(", real cm = ");
-  Serial.println(Distance_cm(ping_milli));
-  // delay(100); // Just to slow things down
+  int leftIR = analogRead(LEFT_IR_PIN);
+  int rightIR = analogRead(RIGHT_IR_PIN);
+  Serial.print(leftIR);
+  Serial.print("  = leftIR, rightIR = ");
+  Serial.println(rightIR);
+
+   delay(100); // Just to slow things down
 
   /*  Assuming no switches closed initially.  Drive forward: */
   motorLeft->setSpeed(FORWARD_SPEED);
   motorRight->setSpeed(FORWARD_SPEED);
   while(digitalRead(LEFT_BUMP_PIN) && digitalRead(RIGHT_BUMP_PIN)
-	&& Distance_inches(sonic.ping()) > TARGET_DISTANCE_INCHES) {
+  	&& Distance_inches(sonic.ping()) > TARGET_DISTANCE_INCHES) {
     motorLeft->run(FORWARD);
     motorRight->run(FORWARD);
-  }
+ 
+    leftIR = analogRead(LEFT_IR_PIN);
+    rightIR = analogRead(RIGHT_IR_PIN);
+    Serial.print(leftIR);
+    Serial.print("  = leftIR, rightIR = ");
+    Serial.println(rightIR);
+
+
+
+ }
   
   /* If you got here, one of the bump switches was closed or B^3 is too
      close to something straight ahead */
