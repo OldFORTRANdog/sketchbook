@@ -13,7 +13,6 @@
 */
 #include <Wire.h>
 #include <Adafruit_MotorShield.h> 
-#include <math.h>
 #include <breadboardbot.h>
 
 // Create the motor shield object with the default I2C address
@@ -51,11 +50,13 @@ void loop(void){
   delay(2000);
 
   speed = TESTSPEED;
+  motorLeft->setSpeed(speed); // Reset motor speeds, changed by allStop
+  motorRight->setSpeed(speed);
   motorLeft->run(BACKWARD); // Now do the same thing backwards
   motorRight->run(BACKWARD);
   delay(1000);
   
-  allStop(BACKWARD, *motorLeft, *motorRight);
+  allStop(BACKWARD, *motorLeft, *motorRight); // This is in our include file!
 
   while (1);                // What does this do?
 }

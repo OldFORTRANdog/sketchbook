@@ -27,7 +27,6 @@ const byte RIGHT_MOTOR_PORT = 1;
 Adafruit_DCMotor *motorLeft = AFMS.getMotor(LEFT_MOTOR_PORT);
 Adafruit_DCMotor *motorRight = AFMS.getMotor(RIGHT_MOTOR_PORT);
 
-
 void setup(void){
   AFMS.begin();  // create with the default frequency 1.6KHz
   // Turn off all motors

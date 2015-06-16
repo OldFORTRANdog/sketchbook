@@ -13,7 +13,6 @@
 */
 #include <Wire.h>
 #include <Adafruit_MotorShield.h> 
-#include <math.h>
 
 // Create the motor shield object with the default I2C address
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
@@ -50,6 +49,8 @@ void loop(void){
   delay(2000);
 
   speed = TESTSPEED;
+  motorLeft->setSpeed(speed); // Reset motor speeds change by allStop.
+  motorRight->setSpeed(speed);
   motorLeft->run(BACKWARD); // Now do the same thing backwards
   motorRight->run(BACKWARD);
   delay(1000);
@@ -60,8 +61,11 @@ void loop(void){
 }
 
 void allStop(int direction) {
+  /* This subroutine stops the robot by reversing the mtors for short
+     duration.  Parameter is what direction it is initially going.
+  */
   motorLeft->setSpeed(100);  // Note that we reset the speeds here; therefore, 
-  motorRight->setSpeed(100); // we need ot reset them in other routine.
+  motorRight->setSpeed(100); // we need to reset them in calling routine.
   if (direction == FORWARD) {
     motorLeft->run(BACKWARD);
     motorRight->run(BACKWARD);

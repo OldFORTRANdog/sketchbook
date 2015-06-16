@@ -18,6 +18,8 @@
 // Create the motor shield object with the default I2C address
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
 
+// Define Pin Assignments
+#define TESTPIN 33
 // Define Constants
 #define TESTTIME 1000
 #define TRIALWAITTIME 5000
@@ -35,13 +37,19 @@ void setup(void){
   // Turn off all motors to start, just a good habit
   motorLeft->run(RELEASE);
   motorRight->run(RELEASE);
+
+  pinMode(TESTPIN, INPUT_PULLUP);
 }
 
 void loop(void){
   
-  delay(2000); // Delay for two seconds to give time to place the robot.
-
-  // Autonomous loop for determining power and distance
+  // delay(2000); // Delay for two seconds to give time to place the robot.
+  while(digitalRead(TESTPIN)){}
+  /* Autonomous loop for determining power and distance, will
+     run through each power 5 times, for replicates, then advance power
+     by 50.  Therefore it tests: 50, 100, 150, 200 and 250.
+  */
+  
   for ( byte leg = 0; leg <= 4; leg++ ) {
     byte speed = 50 + 50*leg;
     for (byte trial = 1; trial <=5; trial++ ) {
@@ -51,18 +59,25 @@ void loop(void){
       motorRight->run(FORWARD);
       delay(TESTTIME);  // Run for 1 second
       allStop(FORWARD, *motorLeft, *motorRight);
+      while(!digitalRead(TESTPIN)){}
+      while(digitalRead(TESTPIN)){}
       delay(TREATMENTWAITTIME);
     }
+    while(!digitalRead(TESTPIN)){}
+    while(digitalRead(TESTPIN)){}
+    //delay(TREATMENTWAITTIME);
+  }
+  // One last loop for full speed, 255, just for fun!
+  for (byte trial = 1; trial <=5; trial++ ) {
+    motorLeft->setSpeed(255);  // Set both speeds
+    motorRight->setSpeed(255);
+    motorLeft->run(FORWARD);
+    motorRight->run(FORWARD);
+    delay(TESTTIME);  // Run for 1 second
+    allStop(FORWARD, *motorLeft, *motorRight);
+    while(!digitalRead(TESTPIN)){}
+    while(digitalRead(TESTPIN)){}
     delay(TREATMENTWAITTIME);
   }
-    for (byte trial = 1; trial <=5; trial++ ) {
-      motorLeft->setSpeed(255);  // Set both speeds
-      motorRight->setSpeed(255);
-      motorLeft->run(FORWARD);
-      motorRight->run(FORWARD);
-      delay(TESTTIME);  // Run for 1 second
-      allStop(FORWARD, *motorLeft, *motorRight);
-      delay(5000);
-    }
   while(1){}
 }
