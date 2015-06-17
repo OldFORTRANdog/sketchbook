@@ -72,6 +72,8 @@ void spin(float degrees, byte speed,
   // float distance = PI * trackWidth * degrees / 360.;
   float distance = PI * trackWidth * degrees / 360.;
   float duration = duration_per_distance(distance, speed);
+  mLeft.setSpeed(speed);  // Set both speeds
+  mRight.setSpeed(speed);
   if (degrees > 0) {
     /* Positive angle is spin turn to the right; therefore right motor goes
        backwards and left side goes forward */
@@ -97,6 +99,8 @@ void pivot(float degrees, byte speed,
      circle needed, given by the ratio degrees/360. */
   float distance = PI * trackWidth * degrees / 360.;
   float duration = duration_per_distance(distance, speed);
+  mLeft.setSpeed(speed);  // Set both speeds
+  mRight.setSpeed(speed);
   if (degrees > 0) {
     /* Positive angle is spin turn to the right; therefore right motor 
        does nothing and left side goes forward */
