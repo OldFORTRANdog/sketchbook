@@ -97,7 +97,7 @@ void pivot(float degrees, byte speed,
      
      The actual distance will be the Circumference * the fraction of the
      circle needed, given by the ratio degrees/360. */
-  float distance = PI * trackWidth * degrees / 360.;
+  float distance = 2.0 * PI * trackWidth * degrees / 360.;
   float duration = duration_per_distance(distance, speed);
   mLeft.setSpeed(speed);  // Set both speeds
   mRight.setSpeed(speed);
