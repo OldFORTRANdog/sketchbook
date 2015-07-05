@@ -1,4 +1,4 @@
-/* B3_Bump.ino
+/* B3_03_Bump.ino
 
    Drive the TWO-WHEELED Bread Board Bot (BBbot, B^3)
    forward.  When a whisker bump sensor on either side hits something,
@@ -10,7 +10,8 @@
    ---->  http://www.adafruit.com/products/1438
 
    Programmer: Dave Eslinger; June 12, 2015
-   Revisions: 
+   Major revisions:  
+         July 3, 2015 DLE (renamed, changed motorshield pointer passing) 
 */
 #include <Wire.h>
 #include <Adafruit_MotorShield.h> 
@@ -27,7 +28,7 @@ const byte RIGHT_BUMP_PIN = 46;   // and right bump sensors
 
 const byte FORWARD_SPEED = 150;   // Define normal speeds
 const byte BACKWARD_SPEED = 100;  // and backup/turn speed
-const int  TURN_DURATION = 600;   // Turn length in milliseconds
+const int  TURN_DURATION = 600;   // Turn time in milliseconds
 
 // Define 'ports' for motors.
 const byte LEFT_MOTOR_PORT = 3;
@@ -57,7 +58,8 @@ void loop(){
   /*  Assuming no switches closed initially.  Drive forward: */
   motorLeft->setSpeed(FORWARD_SPEED);
   motorRight->setSpeed(FORWARD_SPEED);  
-  while(digitalRead(LEFT_BUMP_PIN) && digitalRead(RIGHT_BUMP_PIN)) {
+  while(digitalRead(LEFT_BUMP_PIN) == HIGH && 
+        digitalRead(RIGHT_BUMP_PIN)) == HIGH {
     motorLeft->run(FORWARD);
     motorRight->run(FORWARD);
   }
@@ -65,7 +67,7 @@ void loop(){
   /* If you got here, one of the bump switches was closed */
 
   /* First check the LEFT sensor: */
-  if(! digitalRead(LEFT_BUMP_PIN)) { // the LEFT side switch was bumped
+  if(digitalRead(LEFT_BUMP_PIN) != HIGH) { // the LEFT side switch was bumped
     motorLeft->setSpeed(BACKWARD_SPEED/2); // Slowly back up and turn to right
     motorRight->setSpeed(BACKWARD_SPEED);  
     motorLeft->run(BACKWARD);
@@ -76,7 +78,7 @@ void loop(){
   }
 
   /* Then check the right sensor: */
-   if(! digitalRead(RIGHT_BUMP_PIN)) { // the RIGHT side switch was bumped
+   if(digitalRead(RIGHT_BUMP_PIN) != HIGH) { // the RIGHT side switch was bumped
     motorLeft->setSpeed(BACKWARD_SPEED); // Slowly back up and turn to left
     motorRight->setSpeed(BACKWARD_SPEED/2);  
     motorLeft->run(BACKWARD);

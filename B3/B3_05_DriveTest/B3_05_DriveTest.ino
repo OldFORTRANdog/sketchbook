@@ -1,4 +1,4 @@
-/* B3_DriveTest.ino
+/* B3_05_DriveTest.ino
    Drive the TWO-WHEELED Bread Board Bot (BBbot, B^3)
    in a series of timed intervals, stopping at end of each.
    Start new one after a 5 second time interval.
@@ -8,7 +8,8 @@
    ---->  http://www.adafruit.com/products/1438
 
    Programmer: Dave Eslinger; June 7, 2015
-   Revisions: 
+   Major revisions:
+         July 3, 2015 DLE (renamed, changed motorshield pointer passing) 
 */
 #include <Wire.h>
 #include <Adafruit_MotorShield.h> 
@@ -57,15 +58,15 @@ void loop(void){
       motorRight->setSpeed(speed);
       motorLeft->run(FORWARD);
       motorRight->run(FORWARD);
-      delay(TESTTIME);  // Run for 1 second
-      allStop(FORWARD, *motorLeft, *motorRight);
+      delay(TESTTIME);  // Run for test time
+      allStop(FORWARD, motorLeft, motorRight);
       while(!digitalRead(TESTPIN)){}
       while(digitalRead(TESTPIN)){}
       delay(TREATMENTWAITTIME);
     }
     while(!digitalRead(TESTPIN)){}
     while(digitalRead(TESTPIN)){}
-    //delay(TREATMENTWAITTIME);
+
   }
   // One last loop for full speed, 255, just for fun!
   for (byte trial = 1; trial <=5; trial++ ) {
@@ -74,7 +75,7 @@ void loop(void){
     motorLeft->run(FORWARD);
     motorRight->run(FORWARD);
     delay(TESTTIME);  // Run for 1 second
-    allStop(FORWARD, *motorLeft, *motorRight);
+    allStop(FORWARD, motorLeft, motorRight);
     while(!digitalRead(TESTPIN)){}
     while(digitalRead(TESTPIN)){}
     delay(TREATMENTWAITTIME);

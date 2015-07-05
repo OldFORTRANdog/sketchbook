@@ -1,14 +1,19 @@
 /* B3_TimedForward.ino
    Drive the TWO-WHEELED Bread Board Bot (BBbot, B^3)
    straight ahead for specified time and then stop
-   with a short reverse brake on the motors. 
+   
+   Intially commented out code will impliment a a short 
+   reverse brake on the motors. 
 
    Arduino: Arduino Mega 256 v3 Clone
    Motor Shield: Adafruit assembled Motor Shield for Arduino v2
    ---->  http://www.adafruit.com/products/1438
 
    Programmer: Dave Eslinger (DLE); June 3, 2015
-   Revisions:  6/7/2015, DLE: Cleaned it up for GoSciTech
+   Major revisions:  
+         6/7/2015, DLE: Cleaned it up for GoSciTech
+         7/4/2015 DLE renamed
+
 */
 #include <Wire.h>
 #include <Adafruit_MotorShield.h> 
@@ -35,39 +40,45 @@ void setup(void){
 }
 
 void loop(void){
-  // Drive forward for 1 second at 50% power
-  byte speed = 155;
+  // Drive forward for 1 second at X/255 (~60% power)
+  int duration = 1000; // in milliseconds
+  byte speed = 255;
   motorLeft->setSpeed(speed);
   motorRight->setSpeed(speed);
   
   motorLeft->run(FORWARD);
   motorRight->run(FORWARD);
   
-  delay(1000);
+  delay(duration);
   
-  /* motorLeft->run(RELEASE);   // This just coasts
-   motorRight->run(RELEASE); */
-  /* motorLeft->run(BRAKE);     // And this doesn't do anything!
-   motorRight->run(BRAKE); */
-  allStop(FORWARD);
-  delay(2000);
-  //while (1);
+  motorLeft->run(RELEASE);   // Now stop the motors
+  motorRight->run(RELEASE);  // However, this just coasts
+
+//  motorLeft->run(BACKWARD);  // Run backwards for a brief period
+//  motorRight->run(BACKWARD);
+//  delay(50);
+//
+//  motorLeft->run(RELEASE);     // and then stop the motors
+//  motorRight->run(RELEASE);   
+
+  delay(2000);       // Pause for 2 seconds
+  while (1) {};      // What does this do?
 }
 
-void allStop(int direction) {
-  motorLeft->setSpeed(100); // 100 on a 0-255 scale.
-  motorRight->setSpeed(100);
-  if (direction == FORWARD) {
-    motorLeft->run(BACKWARD);
-    motorRight->run(BACKWARD);
-  }
-  else {
-    motorLeft->run(BACKWARD);
-    motorRight->run(BACKWARD);
-  }
-  delay(50);
-  motorLeft->run(RELEASE);
-  motorRight->run(RELEASE);
-  return;
-}
+//void allStop(int direction) {
+//  motorLeft->setSpeed(100); // 100 on a 0-255 scale.
+//  motorRight->setSpeed(100);
+//  if (direction == FORWARD) {
+//    motorLeft->run(BACKWARD);
+//    motorRight->run(BACKWARD);
+//  }
+//  else {
+//    motorLeft->run(BACKWARD);
+//    motorRight->run(BACKWARD);
+//  }
+//  delay(50);
+//  motorLeft->run(RELEASE);
+//  motorRight->run(RELEASE);
+//  return;
+//}
 
