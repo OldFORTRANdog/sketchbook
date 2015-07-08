@@ -1,4 +1,4 @@
-/* B3_SpinSquare.ino
+/* B3_06_SpinSquare.ino
    Drive the TWO-WHEELED Bread Board Bot (BBbot, B^3)
    in a square, stopping at (or near!) end point.
 
@@ -41,16 +41,16 @@ void loop(void){
 
   // Autonomous loop for driving in a square
   for ( byte leg = 1; leg <= 4; leg++ ) {
-    drive(10., TESTSPEED, *motorLeft, *motorRight);// Forward for 10 inches
-    spin(-90., TESTSPEED, *motorLeft, *motorRight); // 90 deg. to left
-    allStop(FORWARD, *motorLeft, *motorRight);
+    drive(10., TESTSPEED, motorLeft, motorRight);// Forward for 10 inches
+    spin(-90., TESTSPEED, motorLeft, motorRight); // 90 deg. to left
+    allStop(FORWARD, motorLeft, motorRight);
     delay(500);  // Pause for 1/2 a second after turning
   }
   delay(3000);
   for ( byte leg = 1; leg <= 4; leg++ ) {
-    drive(10., TESTSPEED, *motorLeft, *motorRight);// Forward for 10 inches
-    spin(90., TESTSPEED, *motorLeft, *motorRight); // 90 deg. to left
-    allStop(FORWARD, *motorLeft, *motorRight);
+    drive(10., TESTSPEED, motorLeft, motorRight);// Forward for 10 inches
+    spin(90., TESTSPEED, motorLeft, motorRight); // 90 deg. to left
+    allStop(FORWARD, motorLeft, motorRight);
     delay(500);  // Pause for 1/2 a second after turning
   }
   while(1){}
