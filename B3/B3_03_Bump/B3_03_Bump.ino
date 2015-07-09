@@ -21,11 +21,10 @@
 // Create the motor shield object with the default I2C address
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
 
-// Define Constants
-
+// Define Pin Assignments
 const byte LEFT_BUMP_PIN = 47;    // Define DIGITAL Pins for left
 const byte RIGHT_BUMP_PIN = 46;   // and right bump sensors
-
+// Define Constants
 const byte FORWARD_SPEED = 150;   // Define normal speeds
 const byte BACKWARD_SPEED = 100;  // and backup/turn speed
 const int  TURN_DURATION = 600;   // Turn time in milliseconds
@@ -59,7 +58,7 @@ void loop(){
   motorLeft->setSpeed(FORWARD_SPEED);
   motorRight->setSpeed(FORWARD_SPEED);  
   while(digitalRead(LEFT_BUMP_PIN) == HIGH && 
-        digitalRead(RIGHT_BUMP_PIN)) == HIGH {
+        digitalRead(RIGHT_BUMP_PIN) == HIGH) {
     motorLeft->run(FORWARD);
     motorRight->run(FORWARD);
   }
