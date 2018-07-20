@@ -1,4 +1,4 @@
-/* Common Funtions for Bread Board Bot
+/* Common Functions for Bread Board Bot
 
    Arduino Robotics summer camp at GoSciTech 2015nn
    SC Governor's School of Science and Math
@@ -30,8 +30,8 @@ void allStop(int oldDirection,
     mRight->run(BACKWARD);
   }
   else {
-    mLeft->run(BACKWARD);
-    mRight->run(BACKWARD);
+    mLeft->run(FORWARD);
+    mRight->run(FORWARD);
   }
   delay(50);
   mLeft->run(RELEASE);
