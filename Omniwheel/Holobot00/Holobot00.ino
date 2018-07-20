@@ -9,7 +9,7 @@
 
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
-#include "utility/Adafruit_PWMServoDriver.h" // I don't think this is required
+//#include "utility/Adafruit_PWMServoDriver.h" // I don't think this is required
 
 
 // Create the motor shield object with the default I2C address

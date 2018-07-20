@@ -23,7 +23,7 @@
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
 
 // Define Constants
-const byte TESTSPEED = 155;
+const byte TESTSPEED = 255;
 
 // Define 'ports' for motors.
 const byte LEFT_MOTOR_PORT = 3;
@@ -42,7 +42,7 @@ void setup(void){
 void loop(void){
   // Drive forward for 1 second at X/255 (~60% power)
   int duration = 1000; // in milliseconds
-  byte speed = 255;
+  byte speed = TESTSPEED;
   motorLeft->setSpeed(speed);
   motorRight->setSpeed(speed);
   
