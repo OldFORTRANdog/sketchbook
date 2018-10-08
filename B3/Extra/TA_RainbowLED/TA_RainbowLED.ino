@@ -98,4 +98,8 @@ void loop() {
 	timedAction2.check();
 }
 
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> origin/master

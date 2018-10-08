@@ -50,4 +50,8 @@ void loop() {
 	  delay(baseTime*offMult);              // wait for a second		
 	}
 	delay(1000);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master

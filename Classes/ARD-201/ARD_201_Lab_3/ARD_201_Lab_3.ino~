@@ -1,0 +1,159 @@
+#include <inttypes.h>
+#include "Arduino.h"
+#include "responses.h"
+#include "string.h"
+
+enum convoState { 
+  CONVO_DISCONNECT,
+  CONVO_CONNECT,
+  CONVO_REPEAT,
+  CONVO_UNKNOWN
+};
+
+#define TIMEOUT 10000
+
+#define BUFFER_SIZE 128
+char rxBuffer[BUFFER_SIZE] = "";
+char index = 0;
+
+char compareString[BUFFER_SIZE] = "";
+
+convoState _convoState    = CONVO_DISCONNECT;
+convoState _convoStateOld = CONVO_UNKNOWN;
+uint32_t   _stateTime     = 0;
+
+char returnFlag = 0;
+char responseIndex = 0;
+
+
+void setup() {                
+  Serial.begin(9600);
+  delay(5000);
+  Serial.println(welcome);
+}
+
+void loop() {
+  updateConvo();
+  updateSerial();
+}
+
+void updateConvo() {
+  uint32_t currentTime = millis();
+
+  if(_convoState != _convoStateOld) {
+    //The state changed from what it used to be
+    _convoStateOld = _convoState;
+
+    //Store the time we entered the state
+    _stateTime = currentTime; 
+
+    //first time in state
+    switch(_convoState) {
+      case CONVO_DISCONNECT:
+        clearSerial();
+        Serial.println(plsConnect);
+        break;
+        
+      case CONVO_CONNECT:
+        clearSerial(); 
+        Serial.println(thxConnect);   
+        _stateTime += TIMEOUT;  
+        break;
+        
+      case CONVO_REPEAT:
+        clearSerial(); 
+        Serial.println(sayResp[responseIndex++]); 
+        Serial.println(thxConnect); 
+        _stateTime += TIMEOUT;   
+        
+        if(responseIndex >= sayRespCount) {
+          responseIndex = 0;
+        }
+        break;
+
+      default:
+        //not sure how we got here... go to disconnected
+        _convoState = CONVO_DISCONNECT;
+        break;
+    }
+  }
+  
+  switch(_convoState) {
+    case CONVO_DISCONNECT:
+    
+      if(returnFlag == 1) {
+        if(strcmp(rxBuffer, connectReq) == 0) {
+          _convoState = CONVO_CONNECT;
+        }
+        else {
+          Serial.println(noConnect);
+          _convoStateOld = CONVO_UNKNOWN; //restart the state by faking an old state
+        }
+      }
+      else if (returnFlag == 2) {
+         Serial.println(tooLong);
+         _convoStateOld = CONVO_UNKNOWN; //restart the state by faking an old state
+      }
+      break;
+      
+    case CONVO_CONNECT:
+        if((int32_t)(currentTime - _stateTime) >= 0) {
+           Serial.println(tooLong); 
+           _convoState = CONVO_DISCONNECT; 
+        }
+        if(returnFlag == 1) {
+          strcpy(compareString, rxBuffer);
+          _convoState = CONVO_REPEAT; 
+        }
+      break;
+      
+    case CONVO_REPEAT:
+        if((int32_t)(currentTime - _stateTime) >= 0) {
+           Serial.println(tooLong); 
+           _convoState = CONVO_DISCONNECT; 
+        }    
+    
+        if(returnFlag == 1) {
+          if(strcmp(compareString, rxBuffer) == 0) {
+            _convoStateOld = CONVO_UNKNOWN;
+          }
+          else {
+            _convoState = CONVO_CONNECT; 
+          }
+        }      
+      break;
+
+    default:
+      //not sure how we got here... go to disconnected
+      _convoState = CONVO_DISCONNECT;
+      break;
+  }
+}
+
+void updateSerial() {
+  if( Serial.available()) { 
+    if(index < BUFFER_SIZE - 1){
+      char ch = Serial.read(); //
+      if(ch == '\r') {
+        rxBuffer[index++] = 0;
+        returnFlag = 1;
+      }
+      else {
+        rxBuffer[index++] = ch; // add the ASCII character to the string;
+      }
+    }
+    else {
+      //buffer overflow
+      index = 0;
+      returnFlag = 2;
+    }
+  }
+}
+
+void clearSerial() {
+  index = 0;
+  returnFlag = 0;
+}
+
+
+

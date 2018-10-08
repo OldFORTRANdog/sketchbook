@@ -210,4 +210,8 @@ void Rainbow(void) {
     analogWrite(GREEN_PIN, 0);
     analogWrite(BLUE_PIN, 0);
 }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> origin/master

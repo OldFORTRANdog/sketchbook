@@ -85,4 +85,8 @@ void loop() {
   timedAction1.check();
 }
 
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> origin/master
