@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="7.7611113in"
+   height="7.7611113in"
+   viewBox="0 0 698.50002 698.50002"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="ChassisLayout.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.84381594"
+     inkscape:cx="342.3733"
+     inkscape:cy="346.42666"
+     inkscape:document-units="in"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:snap-page="false"
+     inkscape:snap-grids="true"
+     units="in"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     objecttolerance="10000"
+     inkscape:window-width="1920"
+     inkscape:window-height="1057"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3349"
+       originx="-89.500002"
+       originy="-179.50005"
+       units="in"
+       spacingx="22.500001"
+       spacingy="22.500001"
+       dotted="false"
+       empspacing="4" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Base Square"
+     transform="translate(-89.5,-174.36223)"
+     style="display:none">
+    <rect
+       style="fill:#ffffff;stroke:#000000"
+       id="rect24001"
+       width="697.5"
+       height="697.5"
+       x="90"
+       y="174.86223" />
+    <circle
+       style="fill:#aa0000;stroke:#000000"
+       id="path24012"
+       cx="438.75"
+       cy="523.61224"
+       r="348.75" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 438.36163,174.69457 c 0.66661,47.32963 0.44441,697.64918 0.44441,697.64918"
+       id="path24014"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 90.000002,444.86227 225,174.86226"
+       id="path24016"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 652.50001,174.86226 135,270.00001"
+       id="path24018"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Chassis Plate"
+     transform="translate(-89.5,-174.36223)"
+     style="display:none">
+    <path
+       style="fill:#550000;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 90.000003,872.36227 0,-427.5 L 225,174.86226 l 427.50001,0 135,270.00001 0,427.5 z"
+       id="path24022"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     inkscape:label="Breadboard/Arduino"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-89.5,-174.36223)"
+     style="display:inline" />
+</svg>
