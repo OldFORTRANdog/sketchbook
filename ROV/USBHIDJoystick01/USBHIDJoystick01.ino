@@ -8,16 +8,17 @@
 #endif
 #include <SPI.h>
 
-#include "hidjoystickrptparser.h"
+#include "hidjoystickrptparser01.h"
 
 USB Usb;
 USBHub Hub(&Usb);
 HIDUniversal Hid(&Usb);
 JoystickEvents JoyEvents;
 JoystickReportParser Joy(&JoyEvents);
+GamePadEventData GPad;
 
 void setup() {
-        Serial.begin(9600);
+        Serial.begin(115200);
 #if !defined(__MIPSEL__)
         while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
 #endif
@@ -34,7 +35,7 @@ void setup() {
 
 void loop() {
         Usb.Task();
-        
-        delay(20);
+        // Serial.print(joyEvents);
+        // Serial.print(", ");
+        // Serial.println(GPad.Y);
 }
-
