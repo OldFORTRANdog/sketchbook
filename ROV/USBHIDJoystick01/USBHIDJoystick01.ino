@@ -17,7 +17,7 @@ JoystickEvents JoyEvents;
 JoystickReportParser Joy(&JoyEvents);
 
 void setup() {
-        Serial.begin(9600);
+        Serial.begin(115200);
 #if !defined(__MIPSEL__)
         while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
 #endif
