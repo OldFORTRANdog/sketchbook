@@ -1,4 +1,4 @@
-#include "hidjoystickrptparser.h"
+#include "hidjoystickrptparser01.h"
 
 JoystickReportParser::JoystickReportParser(JoystickEvents *evt) :
 joyEvents(evt),

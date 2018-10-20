@@ -8,13 +8,14 @@
 #endif
 #include <SPI.h>
 
-#include "hidjoystickrptparser.h"
+#include "hidjoystickrptparser01.h"
 
 USB Usb;
 USBHub Hub(&Usb);
 HIDUniversal Hid(&Usb);
 JoystickEvents JoyEvents;
 JoystickReportParser Joy(&JoyEvents);
+GamePadEventData GPad;
 
 void setup() {
         Serial.begin(115200);
@@ -34,7 +35,7 @@ void setup() {
 
 void loop() {
         Usb.Task();
-        
-        delay(20);
+        // Serial.print(joyEvents);
+        // Serial.print(", ");
+        // Serial.println(GPad.Y);
 }
-
