@@ -7,10 +7,10 @@
 
 #include <PS3USB.h>
 #include <Sabertooth.h>
-#if defined(SabertoothTXPinSerial)
-#undef SabertoothTXPinSerial
-#define SabertoothTXPinSerial 28
-#endif
+// #if defined(SabertoothTXPinSerial)
+// #undef SabertoothTXPinSerial
+// #define SabertoothTXPinSerial 28
+// #endif
 
 Sabertooth ST_PS(128);
 //Sabertooth ST_UD(128); // The Sabertooth is on address 128. We'll name its object ST.
@@ -32,11 +32,11 @@ PS3USB PS3(&Usb); // This will just create the instance
 bool printAngle;
 uint8_t state = 0;
 
-uint8_t jsPort, jsStarboard, jsUp, jsDown = 0;
+int jsPort, jsStarboard, jsUp, jsDown = 0;
 
 void setup() {
   SabertoothTXPinSerial.begin(9600); // 9600 is the default baud rate for Sabertooth packet serial.
-  ST.autobaud(); // Send the autobaud command to the Sabertooth controller(s).
+  ST_PS.autobaud(); // Send the autobaud command to the Sabertooth controller(s).
   Serial.begin(115200);
 #if !defined(__MIPSEL__)
   while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
@@ -51,7 +51,9 @@ void loop() {
   Usb.Task();
 
 /* Read Right Joystick for Fore - Aft Control */
-  jsPort = map(PS3.getAnalogHat(RightHatY),0,255,-127,127);
+  HERE
+  jsPort = map(PS3.getAnalogHat(RightHatY),0,255,127,-127);
+  Serial.println(jsPort);
 //  if (PS3.PS3Connected || PS3.PS3NavigationConnected) {
 //    if (PS3.getAnalogHat(LeftHatX) > 137 || PS3.getAnalogHat(LeftHatX) < 117 || PS3.getAnalogHat(LeftHatY) > 137 || PS3.getAnalogHat(LeftHatY) < 117 || PS3.getAnalogHat(RightHatX) > 137 || PS3.getAnalogHat(RightHatX) < 117 || PS3.getAnalogHat(RightHatY) > 137 || PS3.getAnalogHat(RightHatY) < 117) {
 //      Serial.print(F("\r\nLeftHatX: "));
