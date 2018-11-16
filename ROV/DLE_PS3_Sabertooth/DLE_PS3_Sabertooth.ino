@@ -51,9 +51,11 @@ void loop() {
   Usb.Task();
 
 /* Read Right Joystick for Fore - Aft Control */
-  HERE
+
   jsPort = map(PS3.getAnalogHat(RightHatY),0,255,127,-127);
   Serial.println(jsPort);
+  ST_PS.motor(1,jsPort);
+  delay(20);
 //  if (PS3.PS3Connected || PS3.PS3NavigationConnected) {
 //    if (PS3.getAnalogHat(LeftHatX) > 137 || PS3.getAnalogHat(LeftHatX) < 117 || PS3.getAnalogHat(LeftHatY) > 137 || PS3.getAnalogHat(LeftHatY) < 117 || PS3.getAnalogHat(RightHatX) > 137 || PS3.getAnalogHat(RightHatX) < 117 || PS3.getAnalogHat(RightHatY) > 137 || PS3.getAnalogHat(RightHatY) < 117) {
 //      Serial.print(F("\r\nLeftHatX: "));

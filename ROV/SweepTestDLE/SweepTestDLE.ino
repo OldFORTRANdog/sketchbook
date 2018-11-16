@@ -30,13 +30,13 @@ void setup()
                  //       If you have a 2x12, 2x25 V2, 2x60 or SyRen 50, you can remove
                  //       the autobaud line and save yourself two seconds of startup delay.
 
-  Serial.begin( 115200 );
+  Serial.begin( 9600 );
 }
 
 void loop()
 {
   int power;
-  
+
   // Ramp motor 1 from -127 to 127 (full reverse to full forward),
   // waiting 20 ms (1/50th of a second) per value.
   for (power = -127; power <= 127; power ++)
@@ -45,7 +45,7 @@ void loop()
     delay(20);
 //    Serial.println(power);
   }
-  
+
   // Now go back the way we came.
   for (power = 127; power >= -127; power --)
   {
@@ -53,4 +53,3 @@ void loop()
     delay(20);          //                      Since SyRen doesn't have a motor 2, this alternative can save you typing.
   }
 }
-
