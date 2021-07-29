@@ -2,20 +2,20 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="7.7611113in"
    height="7.7611113in"
    viewBox="0 0 698.50002 698.50002"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="ChassisLayout.svg">
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="ChassisLayout.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -26,10 +26,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.84381594"
-     inkscape:cx="342.3733"
-     inkscape:cy="346.42666"
+     inkscape:cx="205.02101"
+     inkscape:cy="346.63958"
      inkscape:document-units="in"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      showgrid="true"
      inkscape:snap-page="false"
      inkscape:snap-grids="true"
@@ -39,11 +39,12 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      objecttolerance="10000"
-     inkscape:window-width="1920"
-     inkscape:window-height="1057"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1">
+     inkscape:window-width="1409"
+     inkscape:window-height="975"
+     inkscape:window-x="-7"
+     inkscape:window-y="-7"
+     inkscape:window-maximized="1"
+     inkscape:pagecheckerboard="0">
     <inkscape:grid
        type="xygrid"
        id="grid3349"
@@ -63,7 +64,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -107,10 +108,10 @@
      id="layer3"
      inkscape:label="Chassis Plate"
      transform="translate(-89.5,-174.36223)"
-     style="display:none">
+     style="display:inline">
     <path
        style="fill:#550000;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 90.000003,872.36227 0,-427.5 L 225,174.86226 l 427.50001,0 135,270.00001 0,427.5 z"
+       d="m 90.000003,872.36227 v -427.5 L 225,174.86226 h 427.50001 l 135,270.00001 v 427.5 z"
        id="path24022"
        inkscape:connector-curvature="0" />
   </g>
@@ -119,5 +120,5 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-89.5,-174.36223)"
-     style="display:inline" />
+     style="display:none" />
 </svg>
